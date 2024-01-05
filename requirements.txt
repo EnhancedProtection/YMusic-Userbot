@@ -1,0 +1,6 @@
+pyrogram
+py-tgcalls
+yt-dlp
+tgcrypto
+youtube-search-python
+speedtest-cli
