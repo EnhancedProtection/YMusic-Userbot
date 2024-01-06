@@ -1,13 +1,6 @@
-
-
-sudo apt install ffmpeg -y
+#!/bin/bash
 
 clear
-
 echo "		Initialising Bot ..."
-
 sleep 1s
-
 python3 -m YMusic
-
-
