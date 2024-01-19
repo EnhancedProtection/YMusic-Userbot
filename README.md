@@ -115,10 +115,10 @@ bash start
 
 ## Credits
 
-- [Pyrofork](github.com/pyrof0rk)
-- [Pytgcalls](github.com/pytgcalls/pytgcalls)
-- [Yt-dlp](github.com/yt-dlp/yt-dlp)
-- [Tgcrypto](github.com/pyrogram/tgcrypto)
+- [Pyrofork](https://github.com/Mayuri-Chan/pyrofork)
+- [Pytgcalls](https://github.com/pytgcalls/pytgcalls)
+- [Yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- [Tgcrypto](https://github.com/pyrogram/tgcrypto)
 
 ---------
 
