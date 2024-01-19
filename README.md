@@ -35,15 +35,15 @@ git clone https://github.com/EnhancedProtection/YMusic-Userbot.git
 cd YMusic-Userbot && pip install -r requirements.txt
 ```
 
+### Fill the required data in "config/config.py" file
+
+You can get the required data from [here](https://my.telegram.org/)
+
 ### Generate String Session using the following command
 
 ```sh
 python3 string_gen.py
 ```
-
-### Fill the required data in "config/config.py" file
-
-You can get the required data from [here](https://my.telegram.org/)
 
 ### Now run the following command to start the userbot
 
@@ -80,8 +80,8 @@ bash start
 
 ## Contributors
 
-- [EnhancedProtection](github.com/EnhancedProtection)
-- [Kritik](github.com/Kritik007)
+- [EnhancedProtection](https://github.com/EnhancedProtection/)
+- [Kritik](https://github.com/Kritik007/)
 
 --------
 
