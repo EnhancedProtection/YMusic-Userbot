@@ -1,6 +1,3 @@
-
-
-
 import glob
 from os.path import dirname, isfile
 

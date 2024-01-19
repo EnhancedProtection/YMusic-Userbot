@@ -1,6 +1,3 @@
-
-
-
 loop = {}
 
 async def get_loop(chat_id: int) -> int:

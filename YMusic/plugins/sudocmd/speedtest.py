@@ -1,5 +1,3 @@
-
-
 from YMusic.misc import SUDOERS
 from YMusic import app
 
@@ -10,11 +8,12 @@ import asyncio
 
 import config
 
+PREFIX = config.PREFIX
+
 RPREFIX = config.RPREFIX
 
-
 SPEEDTEST_COMMAND = ["speedtest", "speed"]
-	
+
 
 def testspeed(m):
     try:
@@ -32,26 +31,34 @@ def testspeed(m):
     return result
 
 # 		Send Speed of Internet
-@app.on_message(filters.command(SPEEDTEST_COMMAND, RPREFIX) & SUDOERS)
+
+
+@app.on_message((filters.command(SPEEDTEST_COMMAND, PREFIX) | filters.command(SPEEDTEST_COMMAND, RPREFIX)) & SUDOERS)
 async def speedtest_function(client, message):
     m = await message.reply_text("Running Speed test")
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(None, testspeed, m)
     output = f"""**Speedtest Results**
-    
+
 <u>**Client:**</u>
 **__ISP:__** {result['client']['isp']}
 **__Country:__** {result['client']['country']}
-  
+**__ISP Rating:__** {result['client']['isprating']}
+
 <u>**Server:**</u>
 **__Name:__** {result['server']['name']}
 **__Country:__** {result['server']['country']}, {result['server']['cc']}
 **__Sponsor:__** {result['server']['sponsor']}
-**__Latency:__** {result['server']['latency']}  
-**__Ping:__** {result['ping']}"""
+**__Latency:__** {result['server']['latency']}
+**__Ping:__** {result['ping']}
+
+<u>**Speed:**</u>
+**__Download Speed:__** {result['download'] / 1024 / 1024:.2f} Mbps
+**__Upload Speed:__** {result['upload'] / 1024 / 1024:.2f} Mbps
+"""
     msg = await app.send_photo(
-        chat_id=message.chat.id, 
-        photo=result["share"], 
+        chat_id=message.chat.id,
+        photo=result["share"],
         caption=output
     )
     await m.delete()
