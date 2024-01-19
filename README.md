@@ -95,7 +95,7 @@ bash start
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/EnhancedProtection/YMusic-Userbot/blob/main/LICENSE)
 
 --------
 
