@@ -1,7 +1,5 @@
 from youtubesearchpython import VideosSearch
 
-
-
 def searchYt(query) :
 	query = str(query)
 	videosResult= VideosSearch(query, limit=1)
