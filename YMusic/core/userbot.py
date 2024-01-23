@@ -1,7 +1,7 @@
 from YMusic import call
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls import StreamType
-from pytgcalls.types.input_stream.quality import HighQualityAudio, HighQualityVideo
+from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
 
 audio_file = "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
 
@@ -12,9 +12,8 @@ async def playAudio(chat_id, audio_file=audio_file):
             chat_id,
             AudioPiped(
                 audio_file,
-                HighQualityAudio()
+                AudioParameters.from_quality(AudioQuality.STUDIO),
             ),
-            # stream_type=StreamType().pulse_stream, # deprecated in latest version!
         )
         return True, None
     except Exception as e:
@@ -27,10 +26,9 @@ async def playVideo(chat_id, video_file=audio_file):
             chat_id,
             AudioVideoPiped(
                 video_file,
-                HighQualityAudio(),
-                HighQualityVideo(),
+                AudioParameters.from_quality(AudioQuality.STUDIO),
+                VideoParameters.from_quality(VideoQuality.UHD_4K),
             ),
-            # stream_type=StreamType().pulse_stream, # deprecated in latest version
         )
         return True, None
     except Exception as e:
