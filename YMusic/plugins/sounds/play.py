@@ -12,7 +12,7 @@ import time
 
 import config
 
-PLAY_COMMAND = ["PLAY"]
+PLAY_COMMAND = ["P", "PLAY"]
 
 PREFIX = config.PREFIX
 
@@ -41,7 +41,12 @@ async def bash(cmd):
 async def processReplyToMessage(message):
     msg = message.reply_to_message
     if msg.audio or msg.voice:
-        pass
+        m = await message.reply_text("Rukja...Tera Audio Download kar raha hu...")
+        audio_original = await msg.download()
+        input_filename = audio_original
+        return input_filename, m
+    else:
+        return None
 
 
 async def playWithLinks(link):
@@ -58,7 +63,24 @@ async def _aPlay(_, message):
     start_time = time.time()
     chat_id = message.chat.id
     if (message.reply_to_message) is not None:
-        await message.reply_text("Currently this is not supported")
+        if message.reply_to_message.audio or message.reply_to_message.voice:
+            input_filename, m = await processReplyToMessage(message)
+            if input_filename is None:
+                await message.reply_text("Audio pe reply kon karega mai? ya phir song link kon dalega mai? 🤔")
+                return
+            await m.edit("Rukja...Tera Audio Play karne vala hu...")
+            Status, Text = await userbot.playAudio(chat_id, input_filename)
+            if Status == False:
+                await m.edit(Text)
+            else:
+                if chat_id in QUEUE:
+                    queue_num = add_to_queue(
+                        chat_id, message.reply_to_message.audio.title[:19], message.reply_to_message.audio.duration, message.reply_to_message.audio.file_id, message.reply_to_message.link)
+                    await m.edit(f"# {queue_num}\n{message.reply_to_message.audio.title[:19]}\nTera gaana queue me daal diya hu")
+                    return
+                finish_time = time.time()
+                total_time_taken = str(int(finish_time - start_time)) + "s"
+                await m.edit(f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{message.reply_to_message.audio.title[:19]}]({message.reply_to_message.link})\nDuration:- {message.reply_to_message.audio.duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
     elif (len(message.command)) < 2:
         await message.reply_text("Song name kon dalega mai? 🤔")
     else:

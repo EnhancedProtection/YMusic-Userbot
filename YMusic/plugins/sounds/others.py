@@ -23,7 +23,7 @@ MUTE_COMMAND = ["MUTE"]
 
 UNMUTE_COMMAND = ["UNMUTE"]
 
-VOLUME_COMMAND = ["VOLUME"]
+VOLUME_COMMAND = ["VOL", "VOLUME"]
 
 LOOP_COMMAND = ["LOOP"]
 
@@ -169,6 +169,7 @@ async def _loop(_, message):
     else:
         return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
 
+
 @app.on_message(filters.command(LOOPEND_COMMAND, PREFIX))
 async def _endLoop(_, message):
     # Get administrators
@@ -187,4 +188,3 @@ async def _endLoop(_, message):
                 return await message.reply_text(f"Error:- <code>{e}</code>")
     else:
         return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
-
