@@ -1,7 +1,7 @@
 from pytgcalls import PyTgCalls, StreamType
-from pytgcalls.types import Update
-from pytgcalls.types.input_stream import AudioPiped
-from pytgcalls.types.input_stream.quality import HighQualityAudio
+from pytgcalls.types import Update, MediaStream
+# from pytgcalls.types.input_stream import AudioPiped
+# from pytgcalls.types.input_stream.quality import HighQualityAudio
 
 from YMusic import call, app
 from YMusic.utils.queue import QUEUE, get_queue, clear_queue, pop_an_item
@@ -25,9 +25,9 @@ async def _skip(chat_id):
             link = chat_queue[0][4]
             await call.change_stream(
                 chat_id,
-                AudioPiped(
+                MediaStream(
                     songlink,
-                    HighQualityAudio(),
+                    video_flags=MediaStream.IGNORE,
                 ),
             )
             finish_time = time.time()
@@ -49,9 +49,9 @@ async def _skip(chat_id):
                 link = chat_queue[1][4]
                 await call.change_stream(
                     chat_id,
-                    AudioPiped(
+                    MediaStream(
                         songlink,
-                        HighQualityAudio(),
+                        video_flags=MediaStream.IGNORE,
                     ),
                 )
                 finish_time = time.time()
