@@ -1,15 +1,15 @@
 import os
 
 
-API_ID: int = int(os.getenv("API_ID"))
+API_ID: int = int(os.getenv("API_ID")) or int()
 
-API_HASH: str = os.getenv("API_HASH")
+API_HASH: str = os.getenv("API_HASH") or str("")
 
-SESSION_STRING: str = os.getenv("SESSION_STRING")
+SESSION_STRING: str = os.getenv("SESSION_STRING") or str("")
 
-OWNER_ID: list[int] = [int(os.getenv("OWNER_ID"))]
+OWNER_ID: list[int] = [int(os.getenv("OWNER_ID"))] or []
 
-LOG_GROUP_ID: int = int(os.getenv("LOG_GROUP_ID"))
+LOG_GROUP_ID: int = int(os.getenv("LOG_GROUP_ID")) or int()
 
 PREFIX: str = str(".")
 
