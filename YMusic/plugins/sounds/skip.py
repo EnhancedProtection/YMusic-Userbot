@@ -4,8 +4,9 @@ from YMusic.utils.queue import QUEUE, pop_an_item, get_queue, clear_queue
 from YMusic.utils.loop import get_loop
 from YMusic.misc import SUDOERS
 
-from pytgcalls.types.input_stream import AudioPiped
-from pytgcalls.types.input_stream.quality import HighQualityAudio
+from pytgcalls.types import MediaStream
+# from pytgcalls.types.input_stream import AudioPiped
+# from pytgcalls.types.input_stream.quality import HighQualityAudio
 
 
 from pyrogram import filters
@@ -52,9 +53,9 @@ async def _aSkip(_, message):
                     link = chat_queue[1][4]
                     await call.change_stream(
                         chat_id,
-                        AudioPiped(
+                        MediaStream(
                             songlink,
-                            HighQualityAudio(),
+                            video_flags=MediaStream.IGNORE,
                         ),
                     )
                     finish_time = time.time()
