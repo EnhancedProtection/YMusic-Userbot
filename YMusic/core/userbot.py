@@ -1,7 +1,8 @@
 from YMusic import call
-from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
+# from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls import StreamType
-from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
+from pytgcalls.types import MediaStream
+# from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
 
 audio_file = "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
 
@@ -10,9 +11,9 @@ async def playAudio(chat_id, audio_file=audio_file):
     try:
         await call.join_group_call(
             chat_id,
-            AudioPiped(
+            MediaStream(
                 audio_file,
-                AudioParameters.from_quality(AudioQuality.STUDIO),
+                video_flags=MediaStream.IGNORE,
             ),
         )
         return True, None
@@ -24,10 +25,8 @@ async def playVideo(chat_id, video_file=audio_file):
     try:
         await call.join_group_call(
             chat_id,
-            AudioVideoPiped(
+            MediaStream(
                 video_file,
-                AudioParameters.from_quality(AudioQuality.STUDIO),
-                VideoParameters.from_quality(VideoQuality.UHD_4K),
             ),
         )
         return True, None
