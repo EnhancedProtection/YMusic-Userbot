@@ -1,4 +1,4 @@
-from pytgcalls import PyTgCalls, StreamType
+from pytgcalls import PyTgCalls
 from pytgcalls.types import Update, MediaStream
 # from pytgcalls.types.input_stream import AudioPiped
 # from pytgcalls.types.input_stream.quality import HighQualityAudio

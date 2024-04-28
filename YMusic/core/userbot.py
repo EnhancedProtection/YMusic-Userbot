@@ -1,6 +1,6 @@
 from YMusic import call
 # from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls import StreamType
+# from pytgcalls import StreamType
 from pytgcalls.types import MediaStream
 # from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
 
