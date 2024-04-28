@@ -1,7 +1,5 @@
-from pytgcalls import PyTgCalls, StreamType
+from pytgcalls import PyTgCalls, filters
 from pytgcalls.types import Update, MediaStream
-# from pytgcalls.types.input_stream import AudioPiped
-# from pytgcalls.types.input_stream.quality import HighQualityAudio
 
 from YMusic import call, app
 from YMusic.utils.queue import QUEUE, get_queue, clear_queue, pop_an_item
@@ -23,11 +21,11 @@ async def _skip(chat_id):
             duration = chat_queue[0][2]
             songlink = chat_queue[0][3]
             link = chat_queue[0][4]
-            await call.change_stream(
+            await call.play(
                 chat_id,
                 MediaStream(
                     songlink,
-                    video_flags=MediaStream.IGNORE,
+                    video_flags=MediaStream.Flags.IGNORE,
                 ),
             )
             finish_time = time.time()
@@ -47,11 +45,11 @@ async def _skip(chat_id):
                 duration = chat_queue[1][2]
                 songlink = chat_queue[1][3]
                 link = chat_queue[1][4]
-                await call.change_stream(
+                await call.play(
                     chat_id,
                     MediaStream(
                         songlink,
-                        video_flags=MediaStream.IGNORE,
+                        video_flags=MediaStream.Flags.IGNORE,
                     ),
                 )
                 finish_time = time.time()
@@ -63,7 +61,7 @@ async def _skip(chat_id):
     return 1
 
 
-@call.on_stream_end()
+@call.on_update(filters.stream_end)
 async def handler(client: PyTgCalls, update: Update):
     start_time = time.time()
     chat_id = update.chat_id
@@ -79,7 +77,7 @@ async def handler(client: PyTgCalls, update: Update):
 
 async def stop(chat_id):
     try:
-        await call.leave_group_call(
+        await call.leave_call(
             chat_id,
         )
     except:

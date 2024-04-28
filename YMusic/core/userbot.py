@@ -1,19 +1,16 @@
 from YMusic import call
-# from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls import StreamType
 from pytgcalls.types import MediaStream
-# from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
 
 audio_file = "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
 
 
 async def playAudio(chat_id, audio_file=audio_file):
     try:
-        await call.join_group_call(
+        await call.play(
             chat_id,
             MediaStream(
                 audio_file,
-                video_flags=MediaStream.IGNORE,
+                video_flags=MediaStream.Flags.IGNORE,
             ),
         )
         return True, None
@@ -23,7 +20,7 @@ async def playAudio(chat_id, audio_file=audio_file):
 
 async def playVideo(chat_id, video_file=audio_file):
     try:
-        await call.join_group_call(
+        await call.play(
             chat_id,
             MediaStream(
                 video_file,
@@ -87,7 +84,7 @@ async def changeVolume(chat_id, volume: int = 200):
 
 async def stop(chat_id):
     try:
-        await call.leave_group_call(
+        await call.leave_call(
             chat_id,
         )
         return "Stream Ended"
