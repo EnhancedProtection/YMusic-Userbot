@@ -51,11 +51,11 @@ async def _aSkip(_, message):
                     duration = chat_queue[1][2]
                     songlink = chat_queue[1][3]
                     link = chat_queue[1][4]
-                    await call.change_stream(
+                    await call.play(
                         chat_id,
                         MediaStream(
                             songlink,
-                            video_flags=MediaStream.IGNORE,
+                            video_flags=MediaStream.Flags.IGNORE,
                         ),
                     )
                     finish_time = time.time()
@@ -71,6 +71,6 @@ async def _aSkip(_, message):
 
 async def stop(chat_id):
     try:
-        await call.leave_group_call(chat_id,)
+        await call.leave_call(chat_id,)
     except:
         pass

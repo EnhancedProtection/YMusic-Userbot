@@ -13,7 +13,7 @@ Please Star The Repo If You Liked It.
 
 ## Requirements
 
-- Python 3.10
+- Python >=3.10
 - FFmpeg
 - Telegram Account
 

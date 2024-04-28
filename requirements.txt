@@ -1,6 +1,7 @@
 pyrofork
-py-tgcalls
+git+https://github.com/pytgcalls/pytgcalls
 yt-dlp
 tgcrypto
 youtube-search-python
 speedtest-cli
+ffprobe
