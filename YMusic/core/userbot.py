@@ -1,7 +1,5 @@
 from YMusic import call
-# from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.types import MediaStream
-# from pytgcalls.types import AudioParameters, VideoParameters, AudioQuality, VideoQuality
 
 audio_file = "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
 
