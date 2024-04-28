@@ -65,7 +65,7 @@ bash start
 - resume [Admins Only]
 - stop/chup [Admins Only]
 - loop [Admins Only]
-- unloop [Admins Only]
+- endloop [Admins Only]
 - speedtest [Userbot Owner/Sudoers Only]
 
 ---------
@@ -82,6 +82,7 @@ bash start
 
 - [EnhancedProtection](https://github.com/EnhancedProtection/)
 - [Kritik](https://github.com/Kritik007/)
+- [Abhi](https://github.com/AbhiTheModder)
 
 --------
 
