@@ -20,7 +20,7 @@ async def playAudio(chat_id, audio_file=audio_file):
 
 async def playVideo(chat_id, video_file=audio_file):
     try:
-        await call.join_group_call(
+        await call.play(
             chat_id,
             MediaStream(
                 video_file,
