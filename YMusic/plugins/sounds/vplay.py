@@ -51,7 +51,7 @@ async def bash(cmd):
 async def processReplyToMessage(message):
     msg = message.reply_to_message
     if msg.video or msg.video_note:
-        m = await message.reply_text("Rukja...Tera Video Download kar raha hu...")
+        m = await message.reply_text("Please wait, downloading your video file...")
         video_original = await msg.download()
         return video_original, m
     else:
@@ -85,9 +85,9 @@ async def _vPlay(_, message):
         if message.reply_to_message.video or message.reply_to_message.video_note:
             input_filename, m = await processReplyToMessage(message)
             if input_filename is None:
-                await message.reply_text("Video pe reply kon karega mai? ya phir video link kon dalega mai? 🤔")
+                await message.reply_text("Please reply to a video or provide a video link...🤔")
                 return
-            await m.edit("Rukja...Tera Video Play kar raha hu...")
+            await m.edit("Please wait playing your video...")
             Status, Text = await userbot.playVideo(chat_id, input_filename)
             if Status == False:
                 await m.edit(Text)
@@ -100,19 +100,19 @@ async def _vPlay(_, message):
                     return
                 finish_time = time.time()
                 total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(f"Tera video play kar rha hu aaja vc\n\nVideoName:- [{message.reply_to_message.video.title[:19]}]({message.reply_to_message.link})\nDuration:- {message.reply_to_message.video.duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+                await m.edit(f"Playing your video, join the vc \n\nVideoName:- [{message.reply_to_message.video.title[:19]}]({message.reply_to_message.link})\nDuration:- {message.reply_to_message.video.duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
 
     elif (len(message.command)) < 2:
-        await message.reply_text("Link kon daalega mai? 🤔")
+        await message.reply_text("Who will provide me the link 🤔")
     else:
-        m = await message.reply_text("Rukja...Tera video dhund raha hu...")
+        m = await message.reply_text("Please wait downloading your video...")
         query = message.text.split(" ", 1)[1]
         try:
             title, duration, link = ytDetails.searchYt(query)
         except Exception as e:
             await message.reply_text(f"Error :- <code>{e}</code>")
             return
-        await m.edit("Rukja...Tera video download kar raha hu...")
+        await m.edit("Please wait...")
         resp, ytlink = await ytdl(link)
         if resp == 0:
             await m.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
@@ -120,7 +120,7 @@ async def _vPlay(_, message):
             if chat_id in QUEUE:
                 queue_num = add_to_queue(
                     chat_id, title[:19], duration, ytlink, link)
-                await m.edit(f"# {queue_num}\n{title[:19]}\nTera Video queue me daal diya hu")
+                await m.edit(f"# {queue_num}\n{title[:19]}\nYour request has been queued")
                 return
             # await asyncio.sleep(2)
             Status, Text = await userbot.playVideo(chat_id, ytlink)
@@ -136,4 +136,4 @@ async def _vPlay(_, message):
             await playback_completed(chat_id)
         finish_time = time.time()
         total_time_taken = str(int(finish_time - start_time)) + "s"
-        await m.edit(f"Tera video play kar rha hu aaja vc\n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+        await m.edit(f"Playing your video, Join the vc \n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
