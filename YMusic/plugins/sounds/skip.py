@@ -66,7 +66,7 @@ async def _aSkip(_, message):
                 except Exception as e:
                     return await app.send_message(chat_id, f"Error:- <code>{e}</code>")
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(""Sorry, You Don't have perms to stop..")
 
 
 async def stop(chat_id):
