@@ -44,7 +44,7 @@ async def _stop(_, message):
             pass
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text("Sorry, You Don't have perms to stop..")
 
 
 @app.on_message(filters.command(STOP_COMMAND, RPREFIX))
@@ -67,7 +67,7 @@ async def _pause(_, message):
         Text = await userbot.pause(message.chat.id)
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text("Sorry, You Don't have perms to stop..")
 
 
 @app.on_message(filters.command(PAUSE_COMMAND, RPREFIX))
@@ -90,7 +90,7 @@ async def _resume(_, message):
         Text = await userbot.resume(message.chat.id)
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text("Sorry, You Don't have perms to stop..")
 
 
 @app.on_message(filters.command(RESUME_COMMAND, RPREFIX))
@@ -167,7 +167,7 @@ async def _loop(_, message):
         else:
             await message.reply_text("Loop already enabled")
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text("Sorry, You Don't have perms to stop..")
 
 
 @app.on_message(filters.command(LOOPEND_COMMAND, PREFIX))
@@ -187,4 +187,4 @@ async def _endLoop(_, message):
             except Exception as e:
                 return await message.reply_text(f"Error:- <code>{e}</code>")
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text("Sorry, You Don't have perms to stop..")
