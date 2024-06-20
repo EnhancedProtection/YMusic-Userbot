@@ -20,7 +20,9 @@ RPREFIX = config.RPREFIX
 
 
 async def ytdl(format: str, link: str):
-    stdout, stderr = await bash(f'yt-dlp --geo-bypass -g -f "[height<=?720][width<=?1280]" {link}')
+    stdout, stderr = await bash(
+        f'yt-dlp --geo-bypass -g -f "[height<=?720][width<=?1280]" {link}'
+    )
     if stdout:
         return 1, stdout
     return 0, stderr
@@ -45,8 +47,7 @@ async def processReplyToMessage(message):
         audio_original = await msg.download()
         input_filename = audio_original
         return input_filename, m
-    else:
-        return None
+    return None
 
 
 async def playWithLinks(link):
@@ -58,7 +59,7 @@ async def playWithLinks(link):
     return 0
 
 
-@app.on_message((filters.command(PLAY_COMMAND, PREFIX) | filters.command(PLAY_COMMAND, RPREFIX)) & filters.group)
+@app.on_message((filters.command(PLAY_COMMAND, [PREFIX, RPREFIX])) & filters.group)
 async def _aPlay(_, message):
     start_time = time.time()
     chat_id = message.chat.id
@@ -66,7 +67,9 @@ async def _aPlay(_, message):
         if message.reply_to_message.audio or message.reply_to_message.voice:
             input_filename, m = await processReplyToMessage(message)
             if input_filename is None:
-                await message.reply_text("Audio pe reply kon karega mai? ya phir song link kon dalega mai? 🤔")
+                await message.reply_text(
+                    "Audio pe reply kon karega mai? ya phir song link kon dalega mai? 🤔"
+                )
                 return
             await m.edit("Rukja...Tera Audio Play karne vala hu...")
             Status, Text = await userbot.playAudio(chat_id, input_filename)
@@ -75,22 +78,38 @@ async def _aPlay(_, message):
             else:
                 if chat_id in QUEUE:
                     queue_num = add_to_queue(
-                        chat_id, message.reply_to_message.audio.title[:19], message.reply_to_message.audio.duration, message.reply_to_message.audio.file_id, message.reply_to_message.link)
-                    await m.edit(f"# {queue_num}\n{message.reply_to_message.audio.title[:19]}\nTera gaana queue me daal diya hu")
+                        chat_id,
+                        message.reply_to_message.audio.title[:19],
+                        message.reply_to_message.audio.duration,
+                        message.reply_to_message.audio.file_id,
+                        message.reply_to_message.link,
+                    )
+                    await m.edit(
+                        f"# {queue_num}\n{message.reply_to_message.audio.title[:19]}\nTera gaana queue me daal diya hu"
+                    )
                     return
                 finish_time = time.time()
                 total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{message.reply_to_message.audio.title[:19]}]({message.reply_to_message.link})\nDuration:- {message.reply_to_message.audio.duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+                await m.edit(
+                    f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{message.reply_to_message.audio.title[:19]}]({message.reply_to_message.link})\nDuration:- {message.reply_to_message.audio.duration}\nTime taken to play:- {total_time_taken}",
+                    disable_web_page_preview=True,
+                )
     elif (len(message.command)) < 2:
         await message.reply_text("Song name kon dalega mai? 🤔")
     else:
         m = await message.reply_text("Rukja...Tera gaana dhund raha hu...")
         query = message.text.split(" ", 1)[1]
         try:
-            title, duration, link = ytDetails.searchYt(query)
+            if "youtu.be" in query:
+                video_id = query.split("/")[3].split("?")[0]  # Extract ID from youtu.be links
+            else:
+                video_id = query.split("?v=")[1].split("&")[0]  # Extract ID from traditional links
+            
+            title, duration, link = ytDetails.searchYt(video_id)
         except Exception as e:
             await message.reply_text(f"Error:- <code>{e}</code>")
             return
+
         await m.edit("Rukja...Tera gaana download kar raha hu...")
         format = "bestaudio"
         resp, songlink = await ytdl(format, link)
@@ -98,9 +117,10 @@ async def _aPlay(_, message):
             await m.edit(f"❌ yt-dl issues detected\n\n» `{songlink}`")
         else:
             if chat_id in QUEUE:
-                queue_num = add_to_queue(
-                    chat_id, title[:19], duration, songlink, link)
-                await m.edit(f"# {queue_num}\n{title[:19]}\nTera gaana queue me daal diya hu")
+                queue_num = add_to_queue(chat_id, title[:19], duration, songlink, link)
+                await m.edit(
+                    f"# {queue_num}\n{title[:19]}\nTera gaana queue me daal diya hu"
+                )
                 return
             # await asyncio.sleep(1)
             Status, Text = await userbot.playAudio(chat_id, songlink)
@@ -112,10 +132,13 @@ async def _aPlay(_, message):
                 add_to_queue(chat_id, title[:19], duration, songlink, link)
                 finish_time = time.time()
                 total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+                await m.edit(
+                    f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                    disable_web_page_preview=True,
+                )
 
 
-@app.on_message((filters.command(PLAY_COMMAND, PREFIX) | filters.command(PLAY_COMMAND, RPREFIX)) & SUDOERS)
+@app.on_message((filters.command(PLAY_COMMAND, [PREFIX, RPREFIX])) & SUDOERS)
 async def _raPlay(_, message):
     start_time = time.time()
     if (message.reply_to_message) is not None:
@@ -141,4 +164,7 @@ async def _raPlay(_, message):
                     duration = "Playing From LiveStream"
                 finish_time = time.time()
                 total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+                await m.edit(
+                    f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                    disable_web_page_preview=True,
+                )
