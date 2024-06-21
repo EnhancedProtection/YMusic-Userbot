@@ -72,7 +72,11 @@ async def handler(client: PyTgCalls, update: Update):
         await app.send_message(chat_id, resp[1])
     else:
         total_time_taken = str(int(start_time - resp[3])) + "s"
-        await app.send_message(chat_id, f"Playing Your Song\n\nSongName:- [{resp[0]}]({resp[2]})\nDuration:- {resp[1]}\nTime taken to play:- {total_time_taken}", disable_web_page_preview=True)
+        await app.send_message(
+            chat_id,
+            f"Playing Your Song\n\nSongName:- [{resp[0]}]({resp[2]})\nDuration:- {resp[1]}\nTime taken to play:- {total_time_taken}",
+            disable_web_page_preview=True,
+        )
 
 
 async def stop(chat_id):

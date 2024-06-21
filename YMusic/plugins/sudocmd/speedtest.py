@@ -30,10 +30,17 @@ def testspeed(m):
         return m.edit(e)
     return result
 
+
 # 		Send Speed of Internet
 
 
-@app.on_message((filters.command(SPEEDTEST_COMMAND, PREFIX) | filters.command(SPEEDTEST_COMMAND, RPREFIX)) & SUDOERS)
+@app.on_message(
+    (
+        filters.command(SPEEDTEST_COMMAND, PREFIX)
+        | filters.command(SPEEDTEST_COMMAND, RPREFIX)
+    )
+    & SUDOERS
+)
 async def speedtest_function(client, message):
     m = await message.reply_text("Running Speed test")
     loop = asyncio.get_event_loop()
@@ -57,8 +64,6 @@ async def speedtest_function(client, message):
 **__Upload Speed:__** {result['upload'] / 1024 / 1024:.2f} Mbps
 """
     msg = await app.send_photo(
-        chat_id=message.chat.id,
-        photo=result["share"],
-        caption=output
+        chat_id=message.chat.id, photo=result["share"], caption=output
     )
     await m.delete()

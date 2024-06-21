@@ -34,9 +34,13 @@ LOOPEND_COMMAND = ["ENDLOOP"]
 async def _stop(_, message):
     # Get administrators
     administrators = []
-    async for m in app.get_chat_members(message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS):
+    async for m in app.get_chat_members(
+        message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
+    ):
         administrators.append(m)
-    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [admin.user.id for admin in administrators]:
+    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [
+        admin.user.id for admin in administrators
+    ]:
         Text = await userbot.stop(message.chat.id)
         try:
             clear_queue(message.chat.id)
@@ -44,7 +48,9 @@ async def _stop(_, message):
             pass
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(
+            "Abe saale... (Maaf karna wo gusse me thora sa idhar udhar ho jata hu) terepe perms naa hai admins ko bol..."
+        )
 
 
 @app.on_message(filters.command(STOP_COMMAND, RPREFIX))
@@ -61,13 +67,19 @@ async def _stop(_, message):
 async def _pause(_, message):
     # Get administrators
     administrators = []
-    async for m in app.get_chat_members(message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS):
+    async for m in app.get_chat_members(
+        message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
+    ):
         administrators.append(m)
-    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [admin.user.id for admin in administrators]:
+    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [
+        admin.user.id for admin in administrators
+    ]:
         Text = await userbot.pause(message.chat.id)
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(
+            "Abe saale... (Maaf karna wo gusse me thora sa idhar udhar ho jata hu) terepe perms naa hai admins ko bol..."
+        )
 
 
 @app.on_message(filters.command(PAUSE_COMMAND, RPREFIX))
@@ -84,13 +96,19 @@ async def _pause(_, message):
 async def _resume(_, message):
     # Get administrators
     administrators = []
-    async for m in app.get_chat_members(message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS):
+    async for m in app.get_chat_members(
+        message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
+    ):
         administrators.append(m)
-    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [admin.user.id for admin in administrators]:
+    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [
+        admin.user.id for admin in administrators
+    ]:
         Text = await userbot.resume(message.chat.id)
         await message.reply_text(Text)
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(
+            "Abe saale... (Maaf karna wo gusse me thora sa idhar udhar ho jata hu) terepe perms naa hai admins ko bol..."
+        )
 
 
 @app.on_message(filters.command(RESUME_COMMAND, RPREFIX))
@@ -153,30 +171,42 @@ async def _volume(_, message):
 async def _loop(_, message):
     # Get administrators
     administrators = []
-    async for m in app.get_chat_members(message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS):
+    async for m in app.get_chat_members(
+        message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
+    ):
         administrators.append(m)
-    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [admin.user.id for admin in administrators]:
+    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [
+        admin.user.id for admin in administrators
+    ]:
         loop = await get_loop(message.chat.id)
         if loop == 0:
             try:
                 await set_loop(message.chat.id, 5)
-                await message.reply_text("Loop enabled. Now current song will be played 5 times")
+                await message.reply_text(
+                    "Loop enabled. Now current song will be played 5 times"
+                )
             except Exception as e:
                 return await message.reply_text(f"Error:- <code>{e}</code>")
 
         else:
             await message.reply_text("Loop already enabled")
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(
+            "Abe saale... (Maaf karna wo gusse me thora sa idhar udhar ho jata hu) terepe perms naa hai admins ko bol..."
+        )
 
 
 @app.on_message(filters.command(LOOPEND_COMMAND, PREFIX))
 async def _endLoop(_, message):
     # Get administrators
     administrators = []
-    async for m in app.get_chat_members(message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS):
+    async for m in app.get_chat_members(
+        message.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
+    ):
         administrators.append(m)
-    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [admin.user.id for admin in administrators]:
+    if (message.from_user.id) in SUDOERS or (message.from_user.id) in [
+        admin.user.id for admin in administrators
+    ]:
         loop = await get_loop(message.chat.id)
         if loop == 0:
             await message.reply_text("Lopp is not enabled")
@@ -187,4 +217,6 @@ async def _endLoop(_, message):
             except Exception as e:
                 return await message.reply_text(f"Error:- <code>{e}</code>")
     else:
-        return await message.reply_text("Abe saale terepe perms naa hai admins ko bol..")
+        return await message.reply_text(
+            "Abe saale... (Maaf karna wo gusse me thora sa idhar udhar ho jata hu) terepe perms naa hai admins ko bol..."
+        )
