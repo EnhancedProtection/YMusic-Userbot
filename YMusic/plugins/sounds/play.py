@@ -102,8 +102,10 @@ async def _aPlay(_, message):
         try:
             if "youtu.be" in query:
                 video_id = query.split("/")[3].split("?")[0]  # Extract ID from youtu.be links
-            else:
+            elif "https" in query:
                 video_id = query.split("?v=")[1].split("&")[0]  # Extract ID from traditional links
+            else:
+                video_id = query
             
             title, duration, link = ytDetails.searchYt(video_id)
         except Exception as e:
