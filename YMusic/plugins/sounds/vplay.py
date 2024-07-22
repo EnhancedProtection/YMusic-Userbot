@@ -69,22 +69,6 @@ async def playWithLinks(link):
     return 0
 
 
-async def playback_completed(chat_id):
-    if chat_id in QUEUE and QUEUE[chat_id]:
-        next_video = QUEUE[chat_id].pop(0)
-        await call.play(
-            chat_id,
-            MediaStream(next_video["link"]),
-        )
-        await app.send_message(
-            chat_id,
-            f"Playing next video in queue:\n\n{next_video['title']}\n{next_video['link']}",
-        )
-    else:
-        # Leave the voice chat if there are no more videos in the queue
-        await call.leave_call(chat_id)
-
-
 @app.on_message((filters.command(VIDEO_PLAY, [PREFIX, RPREFIX])) & filters.group)
 async def _vPlay(_, message):
     start_time = time.time()
@@ -161,11 +145,9 @@ async def _vPlay(_, message):
                     duration = "Playing From LiveStream"
                 add_to_queue(chat_id, title[:19], duration, ytlink, link)
 
-            # Trigger playback of the next video in the queue
-            await playback_completed(chat_id)
-        finish_time = time.time()
-        total_time_taken = str(int(finish_time - start_time)) + "s"
-        await m.edit(
-            f"Tera video play kar rha hu aaja vc\n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
-            disable_web_page_preview=True,
-        )
+                finish_time = time.time()
+                total_time_taken = str(int(finish_time - start_time)) + "s"
+                await m.edit(
+                    f"Playing your video\n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                    disable_web_page_preview=True,
+                )
