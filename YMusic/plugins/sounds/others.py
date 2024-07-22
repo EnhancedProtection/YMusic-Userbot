@@ -58,7 +58,7 @@ async def _stop(_, message):
     if (len(message.command)) != 2:
         await message.reply_text("You forgot to pass an argument")
     else:
-        msg_id = msg_id = message.text.split(" ", 1)[1]
+        msg_id = message.text.split(" ", 1)[1]
         Text = await userbot.stop(msg_id)
         await message.reply_text(Text)
 
@@ -87,7 +87,7 @@ async def _pause(_, message):
     if (len(message.command)) != 2:
         await message.reply_text("You forgot to pass an argument")
     else:
-        msg_id = msg_id = message.text.split(" ", 1)[1]
+        msg_id = message.text.split(" ", 1)[1]
         Text = await userbot.pause(msg_id)
         await message.reply_text(Text)
 
@@ -116,7 +116,7 @@ async def _resume(_, message):
     if (len(message.command)) != 2:
         await message.reply_text("You forgot to pass an argument")
     else:
-        msg_id = msg_id = message.text.split(" ", 1)[1]
+        msg_id = message.text.split(" ", 1)[1]
         Text = await userbot.resume(msg_id)
         await message.reply_text(Text)
 
@@ -136,7 +136,7 @@ async def _mute(_, message):
     if (len(message.command)) != 2:
         await message.reply_text("You forgot to pass an argument")
     else:
-        msg_id = msg_id = message.text.split(" ", 1)[1]
+        msg_id = message.text.split(" ", 1)[1]
         Text = await userbot.mute(msg_id)
         await message.reply_text(Text)
 
@@ -152,7 +152,7 @@ async def _unmute(_, message):
     if (len(message.command)) != 2:
         await message.reply_text("You forgot to pass an argument")
     else:
-        msg_id = msg_id = message.text.split(" ", 1)[1]
+        msg_id = message.text.split(" ", 1)[1]
         Text = await userbot.unmute(msg_id)
         await message.reply_text(Text)
 
