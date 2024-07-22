@@ -62,7 +62,7 @@ async def _aSkip(_, message):
                     chat_id,
                     MediaStream(
                         songlink,
-                        video_flags=MediaStream.Flags.IGNORE,
+                        video_flags=MediaStream.Flags.AUTO_DETECT,
                     ),
                 )
                 finish_time = time.time()
