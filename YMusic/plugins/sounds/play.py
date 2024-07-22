@@ -21,7 +21,7 @@ RPREFIX = config.RPREFIX
 
 async def ytdl(format: str, link: str):
     stdout, stderr = await bash(
-        f'yt-dlp --geo-bypass -g -f "[height<=?720][width<=?1280]" {link}'
+        f'yt-dlp --geo-bypass -g -f "bestaudio" {link}'
     )
     if stdout:
         return 1, stdout
