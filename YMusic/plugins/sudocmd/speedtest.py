@@ -47,19 +47,19 @@ async def speedtest_function(client, message):
     result = await loop.run_in_executor(None, testspeed, m)
     output = f"""**Speedtest Results**
 
-<u>**Client:**</u>
+__**Client:**__
 **__ISP:__** {result['client']['isp']}
 **__Country:__** {result['client']['country']}
 **__ISP Rating:__** {result['client']['isprating']}
 
-<u>**Server:**</u>
+__**Server:**__
 **__Name:__** {result['server']['name']}
 **__Country:__** {result['server']['country']}, {result['server']['cc']}
 **__Sponsor:__** {result['server']['sponsor']}
 **__Latency:__** {result['server']['latency']}
 **__Ping:__** {result['ping']}
 
-<u>**Speed:**</u>
+__**Speed:**__
 **__Download Speed:__** {result['download'] / 1024 / 1024:.2f} Mbps
 **__Upload Speed:__** {result['upload'] / 1024 / 1024:.2f} Mbps
 """
