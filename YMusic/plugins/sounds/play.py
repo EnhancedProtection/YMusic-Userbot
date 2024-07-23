@@ -1,6 +1,6 @@
 from YMusic import app
 from YMusic.core import userbot
-from YMusic.utils import ytDetails
+from YMusic.utils.ytDetails import searchYt, extract_video_id
 from YMusic.utils.queue import QUEUE, add_to_queue
 from YMusic.misc import SUDOERS
 
@@ -98,16 +98,14 @@ async def _aPlay(_, message):
         await message.reply_text("Song name kon dalega mai? 🤔")
     else:
         m = await message.reply_text("Rukja...Tera gaana dhund raha hu...")
-        query = message.text.split(" ", 1)[1]
+        query = message.text.split(maxsplit=1)[1]
+        video_id = extract_video_id(query)
         try:
-            if "youtu.be" in query:
-                video_id = query.split("/")[3].split("?")[0]  # Extract ID from youtu.be links
-            elif "https" in query:
-                video_id = query.split("?v=")[1].split("&")[0]  # Extract ID from traditional links
-            else:
+            if video_id is None:
                 video_id = query
-            
-            title, duration, link = ytDetails.searchYt(video_id)
+            title, duration, link = searchYt(video_id)
+            if (title, duration, link) == (None, None, None):
+                return await m.edit("No results found")
         except Exception as e:
             await message.reply_text(f"Error:- <code>{e}</code>")
             return
@@ -128,16 +126,15 @@ async def _aPlay(_, message):
             Status, Text = await userbot.playAudio(chat_id, songlink)
             if Status == False:
                 await m.edit(Text)
-            else:
-                if duration is None:
-                    duration = "Playing From LiveStream"
-                add_to_queue(chat_id, title[:19], duration, songlink, link)
-                finish_time = time.time()
-                total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(
-                    f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
-                    disable_web_page_preview=True,
-                )
+            if duration is None:
+                duration = "Playing From LiveStream"
+            add_to_queue(chat_id, title[:19], duration, songlink, link)
+            finish_time = time.time()
+            total_time_taken = str(int(finish_time - start_time)) + "s"
+            await m.edit(
+                f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                disable_web_page_preview=True,
+            )
 
 
 @app.on_message((filters.command(PLAY_COMMAND, [PREFIX, RPREFIX])) & SUDOERS)
@@ -151,7 +148,7 @@ async def _raPlay(_, message):
         m = await message.reply_text("Searching Your Query...")
         query = message.text.split(" ", 2)[2]
         msg_id = message.text.split(" ", 2)[1]
-        title, duration, link = ytDetails.searchYt(query)
+        title, duration, link = searchYt(query)
         await m.edit("Downloading...")
         format = "bestaudio"
         resp, songlink = await ytdl(format, link)
@@ -161,12 +158,11 @@ async def _raPlay(_, message):
             Status, Text = await userbot.playAudio(msg_id, songlink)
             if Status == False:
                 await m.edit(Text)
-            else:
-                if duration is None:
-                    duration = "Playing From LiveStream"
-                finish_time = time.time()
-                total_time_taken = str(int(finish_time - start_time)) + "s"
-                await m.edit(
-                    f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
-                    disable_web_page_preview=True,
-                )
+            if duration is None:
+                duration = "Playing From LiveStream"
+            finish_time = time.time()
+            total_time_taken = str(int(finish_time - start_time)) + "s"
+            await m.edit(
+                f"Tera gaana play kar rha hu aaja vc\n\nSongName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                disable_web_page_preview=True,
+            )
