@@ -96,7 +96,7 @@ async def _queue(_, message):
         chat_queue = get_queue(chat_id)
         if len(chat_queue) == 1:
             await message.reply_text(
-                f"There is no next track. I'm leaving the voice chat..."
+                f"Queue is empty"
             )
             return
         queue = chat_queue[1:]
