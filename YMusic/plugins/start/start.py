@@ -14,6 +14,8 @@ HELP_MESSAGE = f"""
 - `{PREFIX}ping` - Check the bot's ping
 - `{PREFIX}play [name|link|reply]` - Play a song audio by giving song name or link or reply to an audio file
 - `{PREFIX}vplay [name|link|reply]` - Play a song video by giving song name or link or reply to a video file
+- `{PREFIX}pl [name|link|reply to link/name]` - Play a song from playlist by giving song name or link or reply to a link
+- `{PREFIX}playlist [name|link|reply to link/name]` - Play a song from playlist by giving song name or link or reply to a link
 - `{PREFIX}pause` - Pause the current song
 - `{PREFIX}resume` - Resume the current song
 - `{PREFIX}mute` - Mute the bot in the voice chat
