@@ -1,6 +1,6 @@
-from YMusic import app, call
+from YMusic import app
 from YMusic.core import userbot
-from YMusic.utils import ytDetails
+from YMusic.utils.ytDetails import searchYt, extract_video_id
 from YMusic.utils.queue import QUEUE, add_to_queue
 from YMusic.misc import SUDOERS
 
@@ -69,22 +69,6 @@ async def playWithLinks(link):
     return 0
 
 
-async def playback_completed(chat_id):
-    if chat_id in QUEUE and QUEUE[chat_id]:
-        next_video = QUEUE[chat_id].pop(0)
-        await call.play(
-            chat_id,
-            MediaStream(next_video["link"]),
-        )
-        await app.send_message(
-            chat_id,
-            f"Playing next video in queue:\n\n{next_video['title']}\n{next_video['link']}",
-        )
-    else:
-        # Leave the voice chat if there are no more videos in the queue
-        await call.leave_call(chat_id)
-
-
 @app.on_message((filters.command(VIDEO_PLAY, [PREFIX, RPREFIX])) & filters.group)
 async def _vPlay(_, message):
     start_time = time.time()
@@ -126,14 +110,14 @@ async def _vPlay(_, message):
         await message.reply_text("Link kon daalega mai? 🤔")
     else:
         m = await message.reply_text("Rukja...Tera video dhund raha hu...")
-        query = message.text.split(" ", 1)[1]
+        query = message.text.split(maxsplit=1)[1]
+        video_id = extract_video_id(query)
         try:
-            if "youtu.be" in query:
-                video_id = query.split("/")[3].split("?")[0]  # Extract ID from youtu.be links
-            else:
-                video_id = query.split("?v=")[1].split("&")[0]  # Extract ID from traditional links
-            
-            title, duration, link = ytDetails.searchYt(video_id)
+            if video_id is None:
+                video_id = query
+            title, duration, link = searchYt(video_id)
+            if (title, duration, link) == (None, None, None):
+                return await m.edit("No results found")
         except Exception as e:
             await message.reply_text(f"Error:- <code>{e}</code>")
             return
@@ -154,16 +138,12 @@ async def _vPlay(_, message):
             # Check if the video ended
             if Status == False:
                 await m.edit(Text)
-            else:
-                if duration is None:
-                    duration = "Playing From LiveStream"
-                add_to_queue(chat_id, title[:19], duration, ytlink, link)
-
-            # Trigger playback of the next video in the queue
-            await playback_completed(chat_id)
-        finish_time = time.time()
-        total_time_taken = str(int(finish_time - start_time)) + "s"
-        await m.edit(
-            f"Tera video play kar rha hu aaja vc\n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
-            disable_web_page_preview=True,
-        )
+            if duration is None:
+                duration = "Playing From LiveStream"
+            add_to_queue(chat_id, title[:19], duration, ytlink, link)
+            finish_time = time.time()
+            total_time_taken = str(int(finish_time - start_time)) + "s"
+            await m.edit(
+                f"Playing your video\n\nVideoName:- [{title[:19]}]({link})\nDuration:- {duration}\nTime taken to play:- {total_time_taken}",
+                disable_web_page_preview=True,
+            )
