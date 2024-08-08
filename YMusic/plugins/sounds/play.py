@@ -1,3 +1,4 @@
+import os
 from YMusic import app
 from YMusic.core import userbot
 from YMusic.utils.ytDetails import searchYt, extract_video_id
@@ -20,9 +21,14 @@ RPREFIX = config.RPREFIX
 
 
 async def ytdl(format: str, link: str):
-    stdout, stderr = await bash(
-        f'yt-dlp --geo-bypass -g -f "{format}" {link}'
-    )
+    if os.path.exists("www.youtube.com_cookies.txt"):
+        stdout, stderr = await bash(
+            f'yt-dlp --cookies www.youtube.com_cookies.txt --geo-bypass -g -f "{format}" {link}'
+        )
+    else:
+        stdout, stderr = await bash(
+            f'yt-dlp --geo-bypass -g -f "{format}" {link}'
+        )
     if stdout:
         return 1, stdout
     return 0, stderr
