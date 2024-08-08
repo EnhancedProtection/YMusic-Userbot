@@ -21,21 +21,18 @@ PREFIX = config.PREFIX
 RPREFIX = config.RPREFIX
 
 
-async def ytdl(link):
-    proc = await asyncio.create_subprocess_exec(
-        "yt-dlp",
-        "-g",
-        "-f",
-        "best[height<=?720][width<=?1280]",
-        f"{link}",
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    stdout, stderr = await proc.communicate()
-    if stdout:
-        return 1, stdout.decode().split("\n")[0]
+async def ytdl(format: str, link: str):
+    if os.path.exists("www.youtube.com_cookies.txt"):
+        stdout, stderr = await bash(
+            f'yt-dlp --cookies www.youtube.com_cookies.txt --geo-bypass -g -f "{format}" {link}'
+        )
     else:
-        return 0, stderr.decode()
+        stdout, stderr = await bash(
+            f'yt-dlp --geo-bypass -g -f "{format}" {link}'
+        )
+    if stdout:
+        return 1, stdout
+    return 0, stderr
 
 
 async def bash(cmd):
@@ -123,7 +120,8 @@ async def _vPlay(_, message):
             return
 
         await m.edit("Rukja...Tera video download kar raha hu...")
-        resp, ytlink = await ytdl(link)
+        format = "best[height<=?720][width<=?1280]"
+        resp, ytlink = await ytdl(format, link)
         if resp == 0:
             await m.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
         else:
