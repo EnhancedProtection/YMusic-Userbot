@@ -6,8 +6,6 @@ from YMusic.plugins.sounds.play import ytdl
 
 from pyrogram import filters
 
-import asyncio
-import random
 import time
 
 import config
@@ -17,21 +15,26 @@ RPREFIX = config.RPREFIX
 
 PLAYLIST_COMMAND = ["PL", "PLAYLIST"]
 
+
 @app.on_message((filters.command(PLAYLIST_COMMAND, [PREFIX, RPREFIX])) & filters.group)
 async def _aPlay(_, message):
     start_time = time.time()
     chat_id = message.chat.id
-    if len(message.command) < 2:
+    if len(message.command) < 2 and not message.reply_to_message:
         await message.reply_text("PLease enter song name or yt link")
     else:
         m = await message.reply_text("Searching for your song")
-        query = message.text.split(maxsplit=1)[1]
+        if message.reply_to_message:
+            query = message.reply_to_message.text
+        else:
+            query = message.text.split(maxsplit=1)[1]
         video_id = extract_playlist_id(query)
+        link = query
         try:
             if video_id is None:
-                video_id = query
-            title, videoCount, link = searchPlaylist(video_id)
-            if (title, videoCount, link) == (None, None, None):
+                return await m.edit("Invalid YouTube Playlist URL")
+            title, videoCount = searchPlaylist(query)
+            if (title, videoCount) == (None, None):
                 return await m.edit("No results found")
             videoCount = int(videoCount)
             total_videos = videoCount
@@ -63,6 +66,6 @@ async def _aPlay(_, message):
             finish_time = time.time()
             total_time_taken = str(int(finish_time - start_time)) + "s"
             await m.edit(
-            f"Playing all songs from\nPlaylist Name:- [{title[:19]}]({link})\nTotal Videos:- {total_videos}\nTime taken to play:- {total_time_taken}",
+                f"Playing all songs from\nPlaylist Name:- [{title[:19]}]({link})\nTotal Videos:- {total_videos}\nTime taken to play:- {total_time_taken}",
                 disable_web_page_preview=True,
             )
