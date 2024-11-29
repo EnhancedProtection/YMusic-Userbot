@@ -112,10 +112,10 @@ async def _vPlay(_, message):
         m = await message.reply_text("Rukja...Tera video dhund raha hu...")
         query = message.text.split(maxsplit=1)[1]
         video_id = extract_video_id(query)
+        is_videoId = True if video_id is not None else False
+        video_id = query if video_id is None else video_id
         try:
-            if video_id is None:
-                video_id = query
-            title, duration, link = searchYt(video_id)
+            title, duration, link = searchYt(video_id, is_videoId)
             if (title, duration, link) == (None, None, None):
                 return await m.edit("No results found")
         except Exception as e:
