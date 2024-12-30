@@ -24,7 +24,7 @@ Please Star The Repo If You Liked It.
 ### On your Linux Machine use the following commands
 
 ```sh
-sudo apt update && sudo apt upgrade -y && sudo apt install python3 git ffmpeg -y
+sudo apt update && sudo apt upgrade -y && sudo apt install python3 git yt-dlp ffmpeg -y
 ```
 
 ```sh

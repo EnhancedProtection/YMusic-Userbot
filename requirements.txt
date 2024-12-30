@@ -5,3 +5,4 @@ tgcrypto
 pytubefix
 speedtest-cli
 ffprobe
+httpx
