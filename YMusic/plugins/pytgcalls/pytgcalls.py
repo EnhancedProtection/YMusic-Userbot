@@ -61,7 +61,7 @@ async def _skip(chat_id):
     return 1
 
 
-@call.on_update(filters.stream_end)
+@call.on_update(filters.stream_end())
 async def handler(client: PyTgCalls, update: Update):
     start_time = time.time()
     chat_id = update.chat_id
